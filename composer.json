@@ -1,30 +1,40 @@
 {
-  "name": "apimaster/sms",
-  "description": "apimaster quick sms web service",
-  "keywords": [
-    "apimaster",
-    "web service",
-    "rest",
-    "sms",
-    "quick sms"
-  ],
-  "type": "library",
-  "require": {
-    "ext-curl": "*",
-    "ext-json": "*",
-    "php": ">=7.0"
-  },
-  "license": "MIT",
-  "minimum-stability": "dev",
-  "authors": [
-    {
-      "name": "MahdiY",
-      "email": "ymd1376@gmail.com"
+    "name": "apimaster/sms",
+    "description": "apimaster quick sms web service",
+    "keywords": [
+        "apimaster",
+        "web service",
+        "rest",
+        "sms",
+        "quick sms"
+    ],
+    "type": "library",
+    "require": {
+        "ext-curl": "*",
+        "ext-json": "*",
+        "php": ">=7.0"
+    },
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "MahdiY",
+            "email": "ymd1376@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "APIMaster\\SMS\\": "src"
+        },
+        "files": [
+            "src/Helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "APIMaster\\SMS\\SMSServiceProvider"
+            ]
+        }
     }
-  ],
-  "autoload": {
-    "psr-4": {
-      "APIMaster\\SMS\\": "src"
-    }
-  }
 }
