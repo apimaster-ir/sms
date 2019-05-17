@@ -51,6 +51,9 @@ class SMS
 	/**
 	 * Get list of patterns
 	 *
+	 * @param       $phone
+	 * @param int   $pattern_id
+	 * @param array $vars
 	 * @return bool|string
 	 */
 	static function send($phone, int $pattern_id, array $vars)
@@ -116,7 +119,6 @@ class SMS
 	 */
 	private static function request(string $endpoint, array $data = array())
 	{
-
 		$curl = curl_init();
 
 		$url = sprintf('http://api.apimaster.ir/%s/%s', self::$api_key, $endpoint);
