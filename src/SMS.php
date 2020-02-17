@@ -140,7 +140,7 @@ class SMS {
 
 			return [
 				'success' => false,
-				'message' => $error
+				'message' => 'خطا در ارتباط با سرور'
 			];
 		}
 
