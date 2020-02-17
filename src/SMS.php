@@ -2,20 +2,19 @@
 
 namespace APIMaster\SMS;
 
-class SMS
-{
-	private static $api_key = NULL;
+class SMS {
 
-	private static $error = NULL;
+	private static $api_key = null;
+
+	private static $error = null;
 
 	/**
 	 * Get web service information
 	 *
 	 * @return bool|string
 	 */
-	static function info()
-	{
-		return self::request('sms/v1');
+	static function info() {
+		return self::request( 'sms/v1' );
 	}
 
 	/**
@@ -23,9 +22,8 @@ class SMS
 	 *
 	 * @return bool|string
 	 */
-	static function list()
-	{
-		return self::request('sms/v1/list');
+	static function list() {
+		return self::request( 'sms/v1/list' );
 	}
 
 	/**
@@ -33,9 +31,8 @@ class SMS
 	 *
 	 * @return bool|string
 	 */
-	static function vars()
-	{
-		return self::request('sms/v1/vars');
+	static function vars() {
+		return self::request( 'sms/v1/vars' );
 	}
 
 	/**
@@ -43,39 +40,38 @@ class SMS
 	 *
 	 * @return bool|string
 	 */
-	static function patterns()
-	{
-		return self::request('sms/v1/patterns');
+	static function patterns() {
+		return self::request( 'sms/v1/patterns' );
 	}
 
 	/**
 	 * Get list of patterns
 	 *
 	 * @param       $phone
-	 * @param int   $pattern_id
+	 * @param int $pattern_id
 	 * @param array $vars
+	 *
 	 * @return bool|string
 	 */
-	static function send($phone, int $pattern_id, array $vars)
-	{
+	static function send( $phone, int $pattern_id, array $vars ) {
 		$data = [
 			'phone'      => $phone,
 			'pattern_id' => $pattern_id,
 			'data'       => $vars,
 		];
 
-		return self::request('sms/v1/send', $data);
+		return self::request( 'sms/v1/send', $data );
 	}
 
 	/**
 	 * Get status of a message
 	 *
 	 * @param int $message_id
+	 *
 	 * @return bool|string
 	 */
-	static function status(int $message_id)
-	{
-		return self::request('sms/v1/status', ['message_id' => $message_id]);
+	static function status( int $message_id ) {
+		return self::request( 'sms/v1/status', [ 'message_id' => $message_id ] );
 	}
 
 	/**
@@ -83,71 +79,71 @@ class SMS
 	 *
 	 * @return bool|string
 	 */
-	static function key()
-	{
-		return self::request('sms_key');
+	static function key() {
+		return self::request( 'sms_key' );
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getApiKey()
-	{
+	public static function getApiKey() {
 		return self::$api_key;
 	}
 
 	/**
 	 * @param string $api_key
 	 */
-	public static function setApiKey(string $api_key)
-	{
+	public static function setApiKey( string $api_key ) {
 		self::$api_key = $api_key;
 	}
 
 	/**
 	 * @return null
 	 */
-	public static function getError()
-	{
+	public static function getError() {
 		return self::$error;
 	}
 
 	/**
 	 * @param string $endpoint
-	 * @param array  $data
+	 * @param array $data
+	 *
 	 * @return bool|string
 	 */
-	private static function request(string $endpoint, array $data = array())
-	{
+	private static function request( string $endpoint, array $data = array() ) {
 		$curl = curl_init();
 
-		$url = sprintf('http://api.apimaster.ir/%s/%s', self::$api_key, $endpoint);
+		$url = sprintf( 'http://api.apimaster.ir/%s/%s', self::$api_key, $endpoint );
 
-		curl_setopt_array($curl, [
+		curl_setopt_array( $curl, [
 			CURLOPT_URL            => $url,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING       => "",
 			CURLOPT_MAXREDIRS      => 10,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST  => count($data) ? 'POST' : 'GET',
-			CURLOPT_POSTFIELDS     => http_build_query($data),
+			CURLOPT_CUSTOMREQUEST  => count( $data ) ? 'POST' : 'GET',
+			CURLOPT_POSTFIELDS     => http_build_query( $data ),
 			CURLOPT_HTTPHEADER     => [
 				"Accept: application/json",
 				"cache-control: no-cache",
 			],
-		]);
+		] );
 
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
+		$response = curl_exec( $curl );
+		$error    = curl_error( $curl );
 
-		curl_close($curl);
+		curl_close( $curl );
 
-		if ($err) {
-			self::$error = "cURL Error #:" . $err;
-			return false;
+		if ( $error ) {
+			self::$error = "cURL Error #: " . $error;
+
+			return [
+				'success' => false,
+				'message' => $error
+			];
 		}
 
-		return json_decode($response);
+		return json_decode( $response );
 	}
 }
